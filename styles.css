@@ -1,0 +1,42 @@
+#Banner {
+    background-color : #78BE20 ;
+    padding : 10px ;
+    margin : 0px ;
+    
+}
+
+
+#BannerImage {
+    background : url(Assets/MainImageSmaller.png) ;
+    border-radius : 10px ;
+    background-position : left top ;
+    overflow : hidden ;
+    padding : 0px ; 
+    width : 140px ;
+    height : 158px ;
+    float : left ;
+    margin : 10px ;
+    
+}
+
+
+#BannerMainText {
+    font-family : Trebuchet MS ;
+    font-style : bold ;
+    margin : 10px ;
+    
+}
+
+
+#BannerSubText {
+    font-family : Trebuchet MS ;
+    
+}
+
+
+body {
+    padding : 0px ;
+    border : 0px ;
+    margin : 0px ;
+    
+}
