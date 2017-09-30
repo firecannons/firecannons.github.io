@@ -1,14 +1,14 @@
 html,
 body {
-	margin : 0 ;
-	padding : 0 ;
+    margin : 0 ;
+    padding : 0 ;
     height : 100% ;
     background-color : #F0F0F0 ;
 }
 
 #Wrapper {
-	min-height : 100% ;
-	position : relative ;
+    min-height : 100% ;
+    position : relative ;
     padding : 0px ;
     margin : 0px ;
     border : 0px ;
@@ -111,7 +111,6 @@ body {
     font-style: normal ;
     color : #FFFFFF ;
     
-    
 }
 
 
@@ -124,6 +123,31 @@ body {
     background-color : #FFFFFF ;
     
 }
+
+
+.SectionBodyDivider {
+    overflow : hidden ;
+    background-color : #F0F0F0 ;
+    margin : 0px ;
+    padding : 0px ;
+    border : 0px ;
+    
+}
+
+
+.SectionBodyDivider {
+    overflow : hidden ;
+    margin : 0px ;
+    padding : 10px ;
+    padding-left : 10px ;
+    border : 0px ;
+    font-family : Arial ;
+    font-style: normal ;
+    color : #000000 ;
+    
+    
+}
+
 
 
 .SectionBodyElement {
