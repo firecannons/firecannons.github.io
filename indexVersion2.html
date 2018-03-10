@@ -5,12 +5,9 @@
         <meta charset="UTF-8">
         <meta name="description" content="My Website">
         <meta name="keywords" content="Lucas Winkelman,C++,Python,LibNeuroEvolution">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="styles.css">
-        
-        <!-- Bootstrap -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         
         <!-- This code is for Google Analytics -->
@@ -27,77 +24,43 @@
         
     </head>
     <body>
-        <div id="Wrapper">
-            <div id="Banner">
-                <div id="BannerImage">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>                        
+                    </button>
+                    <a class="navbar-brand" href="#">Lucas Winkelman</a>
+                    </div>
+                    <div class="collapse navbar-collapse" id="myNavbar">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="#">Home</a></li>
+                        <li><a href="#">Libraries</a></li>
+                        <li><a href="#">Projects</a></li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Resume<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="Assets/Resume.pdf" download>PDF Resume</a></li>
+                                <li><a href="Assets/Resume.docx" download>Docx Resume</a></li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
-                <h1 id="BannerMainText">Lucas Winkelman</h1>
-                <h3 id="BannerSubText">Sophomore in Computer Science at Missouri S & T</h3>
             </div>
-            
-            <div id="Body">
-                
-                <div class="Section">
-                    <div class="SectionHeader">
-                        <div class="SectionHeaderText">Libraries</div>
-                    </div>
-                    <div class="SectionBody">
-                        <ul class="SectionBodyElement">
-                            <li><a href="https://github.com/firecannons/LibNeuroEvolution" class="SectionBodyItem" >LibNeuroEvolution</a></li>
-                        </ul>
-                    </div>
+        </nav>
+        
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2">
+                    <img src="Assets\MainImageSmaller.png" class="img-rounded" alt="Cinque Terre" width="140" height="158">
+                </div class="col-md-2">
+                <div class="col-md-6">
+                    <h1>Lucas Winkelman<br>Computer Science Sophomore</h1>
                 </div>
-                
-                <div class="Section">
-                    <div class="SectionHeader">
-                        <div class="SectionHeaderText">Projects</div>
-                    </div>
-                    <div class="SectionBody">
-                        <ul class="SectionBodyElement">
-                            <li><a href="Simulation9.html" class="SectionBodyItem">IARC 2D Javascript Simulation</a></li>
-                            <li><a href="https://github.com/firecannons/My_Neat" class="SectionBodyItem">NEAT on Pong</a></li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="Section">
-                    <div class="SectionHeader">
-                        <div class="SectionHeaderText">Resume</div>
-                    </div>
-                    <div class="SectionBody">
-                        <ul class="SectionBodyElement">
-                            <li><a href="Assets/Resume.docx" class="SectionBodyItem"  target="_blank">DOCX Resume</a></li>
-                            <li><a href="Assets/Resume.pdf" class="SectionBodyItem"  target="_blank">PDF Resume</a></li>
-                            <li><a href="Assets/Transcript.pdf" class="SectionBodyItem"  target="_blank">Unofficial Transcript<br>Spring 2018</a></li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="Section">
-                    <div class="SectionHeader">
-                        <div class="SectionHeaderText">Clubs and Activities</div>
-                    </div>
-                    <div class="SectionBody">
-                        <div class="SectionBodyDivider">
-                            <div class="SectionBodyDividerText">Currently</div>
-                        </div>
-                        <ul class="SectionBodyElement">
-                            <li><a href="https://multirotor.mst.edu/" class="SectionBodyItem">MultiRotor Robot Design Team</a></li>
-                            <li><a href="https://acmsigsec.mst.edu/" class="SectionBodyItem">ACM SIG-Security</a></li>
-                        </ul>
-                        <div class="SectionBodyDivider">
-                            <div class="SectionBodyDividerText">In the Past</div>
-                        </div>
-                        <ul class="SectionBodyElement">
-                            <li><div class="SectionBodyItem">ACM SIG-Competition</div></li>
-                            <li><a href="http://siggame.io/" class="SectionBodyItem">ACM SIG-Game</a></li>
-                            <li><a href="https://www.firstinspires.org/" class="SectionBodyItem">FIRST Robotics</a></li>
-                        </ul>
-                    </div>
-                </div>
-                
             </div>
-            <div id="Footer">Lucas Winkelman | lawf48@mst.edu</div>
+            <p style="padding-top: 40px;">In this example, the navigation bar is hidden on small screens and replaced by a button in the top right corner (try to re-size this window).</p>
         </div>
     </body>
 </html>
