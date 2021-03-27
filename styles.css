@@ -41,7 +41,7 @@ background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 30%, #FFCC70 66%, #
     height : 140px ;
     text-align: center;
     margin: 0 auto;
-    margin-top: 5%;
+    margin-top: 8%;
     margin-bottom: 3%;
     padding : 0px ;
     border : 0px ;
@@ -64,30 +64,105 @@ background-color: #f0f0f0;
 }
 
 
-#BannerMainText {
-    font-family : Arial ;
-    font-style : bold ;
+
+.ProjectArea{
+    padding : 10px ;
+    margin : 0px ;
+    overflow : hidden ;
+    box-shadow : 0px 1px 1px #000000 ;
+    float : top ;
+    margin: 0 auto;
+background-color: #ff8888;
+text-align: center;
+    
+}
+
+
+.EsArea{
+    padding : 10px ;
+    margin : 0px ;
+    overflow : hidden ;
+    box-shadow : 0px 1px 1px #000000 ;
+    float : top ;
+    margin: 0 auto;
+background-color: #dc9cff;
+align: center;
+    
+}
+
+
+.AreaTextRight {
+    font-family : Arial;
+    padding-right: 30%;
+    line-height: 40px;
+
+font-size: 20px;
+}
+
+.AreaTitle {
+    font-family : Arial;
+    text-align: center;
+    padding-top: 3%;
+    padding-bottom: 3%;
+
+font-size: 40px;
+}
+
+
+.AreaImageLeft{
+    float: left;
+    background-color: black;
+    padding-left: 30%;
+    height : 300px ;
+}
+
+#ProjectAreaText {
+    font-family : Arial;
+    font-style : bold;
     margin : 0px ;
     border : 0px ;
     padding : 30px ;
     padding-top : 2% ;
-    padding-bottom : 1% ;
+    padding-bottom : 2% ;
     float : top ;
     overflow : hidden ;
+font-size: 60px;
+    
+}
+
+#BioIntro {
+    font-family : Arial;
+    text-align: center;
+    padding-top: 3%;
+    padding-bottom: 3%;
+
 font-size: 40px;
+}
+
+#BannerMainText {
+    font-family : Arial;
+    font-style : bold;
+    margin : 0px ;
+    border : 0px ;
+    padding : 30px ;
+    padding-top : 2% ;
+    padding-bottom : 5% ;
+    float : top ;
+    overflow : hidden ;
+font-size: 60px;
     
 }
 
 
 #BannerSubText {
-    font-family : Arial ;
+    font-family : Arial;
     margin : 0px ;
     border : 0px ;
     padding-bottom : 2% ;
     overflow : hidden ;
     float : top ;
 
-font-size: 30px;
+font-size: 40px;
     
 }
 
@@ -96,10 +171,10 @@ font-size: 30px;
 #BioIntro {
     font-family : Arial;
     text-align: center;
-    padding-top: 7%;
+    padding-top: 3%;
     padding-bottom: 3%;
 
-font-size: 30px;
+font-size: 40px;
 }
 
 #BioBody {
