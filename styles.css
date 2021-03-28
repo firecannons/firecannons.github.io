@@ -50,15 +50,14 @@ display: block;
     
 }
 
-.Area{
+.BioArea{
     padding : 10px ;
     margin : 0px ;
     overflow : hidden ;
-    box-shadow : 0px 1px 1px #000000 ;
     float : top ;
-    margin: 0 auto;
-background-color: #f0f0f0;
-
+    margin: 1% auto;
+    background-color: #f0f0f0;
+    text-align: center;
 
     
 }
@@ -72,48 +71,53 @@ background-color: #f0f0f0;
     box-shadow : 0px 1px 1px #000000 ;
     float : top ;
     margin: 0 auto;
-background-color: #ff8888;
-text-align: center;
+    background-color: #dc9cff;
+    text-align: center;
     
 }
 
 
-.EsArea{
+.Area{
     padding : 10px ;
+    padding-left: 20%;
+    padding-right: 20%;
     margin : 0px ;
     overflow : hidden ;
     box-shadow : 0px 1px 1px #000000 ;
     float : top ;
     margin: 0 auto;
-background-color: #dc9cff;
-align: center;
+    background-color: #dc9cff;
+
+    margin: auto;
+    display: flex;
     
 }
 
-
 .AreaTextRight {
-    font-family : Arial;
-    padding-right: 30%;
-    line-height: 40px;
-
-font-size: 20px;
+    margin: 0px;
+    padding-left: 3%;
 }
 
-.AreaTitle {
+.AreaTextBody {
     font-family : Arial;
-    text-align: center;
-    padding-top: 3%;
-    padding-bottom: 3%;
+    line-height: 40px;
+    font-size: 20px;
+}
 
-font-size: 40px;
+.AreaTextTitle {
+    font-family : Arial;
+    font-size: 30px;
 }
 
 
 .AreaImageLeft{
     float: left;
     background-color: black;
-    padding-left: 30%;
     height : 300px ;
+    display: block;
+}
+
+.AreaLink{
 }
 
 #ProjectAreaText {
@@ -171,8 +175,8 @@ font-size: 40px;
 #BioIntro {
     font-family : Arial;
     text-align: center;
-    padding-top: 3%;
-    padding-bottom: 3%;
+    padding-top: 1%;
+    padding-bottom: 0%;
 
 font-size: 40px;
 }
