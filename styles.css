@@ -98,6 +98,12 @@ display: block;
     padding-left: 3%;
 }
 
+.AreaTextLeft {
+    margin: 0px;
+    padding-right: 3%;
+}
+
+
 .AreaTextBody {
     font-family : Arial;
     line-height: 40px;
@@ -110,6 +116,27 @@ display: block;
 }
 
 
+.ClubText {
+    margin: 0px;
+    padding-left: 3%;
+}
+
+.ClubTextBody {
+    font-family : Arial;
+    line-height: 30px;
+    font-size: 20px;
+    margin: 0px;
+}
+
+.ClubTextTitle {
+    font-family : Arial;
+    font-size: 25px;
+    padding-bottom: 10px;
+    margin: 0px;
+}
+
+
+
 .AreaImageLeft{
     float: left;
     background-color: black;
@@ -117,7 +144,11 @@ display: block;
     display: block;
 }
 
-.AreaLink{
+.AreaImageRight{
+    float: right;
+    background-color: black;
+    height : 300px ;
+    display: block;
 }
 
 #ProjectAreaText {
