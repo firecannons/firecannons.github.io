@@ -49,27 +49,85 @@ display: block;
     
 }
 
+#BannerMainText {
+    font-family : Arial;
+    font-style : bold;
+    margin : 0px ;
+    border : 0px ;
+    padding : 30px ;
+    padding-top : 2% ;
+    padding-bottom : 5% ;
+    float : top ;
+    overflow : hidden ;
+font-size: 60px;
+    
+}
+
+#Body {
+    margin : 0px ;
+    border : 0px ;
+    padding : 0px ;
+    min-height : 100% ;
+    overflow: auto;
+}
+
 .BioArea{
     padding : 30px ;
     margin : 0px ;
     overflow : hidden ;
     float : top ;
     background-color: #f0f0f0;
-    text-align: center;
-    
-    
+    text-align: center;    
     box-shadow : 0px 2px 5px #808080 inset;
-    
-display: block;
+    display: block;
 }
 
+#BioIntro {
+    font-family : Arial;
+    text-align: center;
+    padding-top: 1%;
+    padding-bottom: 0%;
 
+font-size: 40px;
+}
 
-.ProjectArea{
-    padding : 10px ;
+#BioBody {
+    font-family : Arial;
+    padding-left: 30%;
+    padding-right: 30%;
+    line-height: 40px;
+
+font-size: 20px;
+}
+
+.GreenBodyBackground {
+    background-color: darkgreen;
+}
+
+.YellowBodyBackground {
+    background-color: goldenrod;
+}
+
+.SilverBodyBackground {
+    background-color: silver;
+}
+
+.GreenBodyBackground, .YellowBodyBackground, .SilverBodyBackground {
+    width: 100;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+.MainBodyArea {
+    box-shadow :-10px 0px 10px -10px #404040, 10px 0px 10px -10px #404040;
+    
+    background-color: #f0f0f0;
+}
+
+.ProjectArea, .WorkTitleArea{
+    padding : 30px ;
     margin : 0px ;
     overflow : hidden ;
-    box-shadow : 0px 1px 1px #000000 ;
     float : top ;
     margin: 0 auto;
     background-color: #f0f0f0;
@@ -77,19 +135,7 @@ display: block;
     
 }
 
-.WorkArea{
-    padding : 10px ;
-    margin : 0px ;
-    overflow : hidden ;
-    box-shadow : 0px 1px 1px #000000 ;
-    float : top ;
-    margin: 0 auto;
-    background-color: #f0f0f0;
-    text-align: center;
-    
-}
-
-#WorkAreaText {
+#ProjectAreaText, #WorkTitleAreaText {
     font-family : Arial;
     font-style : bold;
     margin : 0px ;
@@ -104,7 +150,7 @@ font-size: 60px;
 }
 
 
-.Area{
+.Area, .LargeHRContainer, .HRContainer{
     padding : 20px ;
     padding-left: 15%;
     padding-right: 15%;
@@ -119,7 +165,24 @@ font-size: 60px;
     
 }
 
-.ClubArea{
+.BodyText {
+    font-size: 20px;
+    font-family: Arial;
+    background: transparent;
+}
+
+.Spacer {
+    height: 100px;
+    background-color: transparent;
+}
+
+.LargeHRContainer {
+    padding: 0px;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+.ClubArea, .WorkHRContainer, .WorkArea, .WorkSpacer {
     padding : 0px ;
     padding-left: 20%;
     padding-right: 20%;
@@ -127,19 +190,33 @@ font-size: 60px;
     overflow : hidden ;
     float : top ;
     margin: 0 auto;
-    background-color: #f0f0f0;
+    background-color: transparent;
 
     margin: auto;
     display: flex;
     
 }
 
+.WorkSpacer {
+    height: 100px;
+}
+
+.ClubImage {
+    background-color: white;
+    height: 150px;
+    width: 150px;
+}
+
 hr {
-  
-  border: 0;
-  width: 100%;
-  background-color: #dc9cff;
-  display: block;
+    width: 100%;
+    display: block;
+    border: none;
+    height: 10px;
+  }
+
+.LargeHR {
+    margin: 0;
+    height: 2px;
 }
 
 .AreaTextRight {
@@ -165,25 +242,28 @@ hr {
 }
 
 
-.ClubText {
+.ClubText, .WorkText {
     margin: 0px;
+    padding: 0px;
+}
+
+.ClubText {
     padding-left: 3%;
 }
 
-.ClubTextBody {
+.ClubTextBody, .WorkTextBody {
     font-family : Arial;
     line-height: 30px;
     font-size: 20px;
     margin: 0px;
 }
 
-.ClubTextTitle {
+.ClubTextTitle, .WorkTextTitle {
     font-family : Arial;
     font-size: 25px;
     padding-bottom: 10px;
     margin: 0px;
 }
-
 
 
 .AreaImageLeft{
@@ -200,180 +280,10 @@ hr {
     display: block;
 }
 
-#ProjectAreaText {
-    font-family : Arial;
-    font-style : bold;
-    margin : 0px ;
-    border : 0px ;
-    padding : 30px ;
-    padding-top : 2% ;
-    padding-bottom : 2% ;
-    float : top ;
-    overflow : hidden ;
-font-size: 60px;
-    
-}
-
-#BioIntro {
-    font-family : Arial;
-    text-align: center;
-    padding-top: 3%;
-    padding-bottom: 3%;
-
-font-size: 40px;
-}
-
-#BannerMainText {
-    font-family : Arial;
-    font-style : bold;
-    margin : 0px ;
-    border : 0px ;
-    padding : 30px ;
-    padding-top : 2% ;
-    padding-bottom : 5% ;
-    float : top ;
-    overflow : hidden ;
-font-size: 60px;
-    
-}
-
-
-#BannerSubText {
-    font-family : Arial;
-    margin : 0px ;
-    border : 0px ;
-    padding-bottom : 2% ;
-    overflow : hidden ;
-    float : top ;
-
-font-size: 40px;
-    
-}
-
-
-
-#BioIntro {
-    font-family : Arial;
-    text-align: center;
-    padding-top: 1%;
-    padding-bottom: 0%;
-
-font-size: 40px;
-}
-
-#BioBody {
-    font-family : Arial;
-    padding-left: 30%;
-    padding-right: 30%;
-    line-height: 40px;
-
-font-size: 20px;
-}
-
-
-
-#Body {
-    margin : 0px ;
-    border : 0px ;
-    padding : 0px ;
-    min-height : 100% ;
-    overflow: auto;
-    
-}
-
-
-.Section {
-    border-radius : 8px ;
-    overflow : hidden ;
-    margin : 25px ;
-    padding : 0px ;
-    border : 0px ;
-    box-shadow : 0px 4px 4px #a0a0a0 ;
-    float : left ;
-    
-}
-
-
-.SectionHeader {
-    overflow : hidden ;
-    background-color : #007A33 ;
-    margin : 0px ;
-    padding : 0px ;
-    border : 0px ;
-    
-}
-
-
-.SectionHeaderText {
-    overflow : hidden ;
-    margin : 0px ;
-    padding : 20px ;
-    border : 0px ;
-    font-family : Arial ;
-    font-style: normal ;
-    color : #FFFFFF ;
-    
-}
-
-
-.SectionBody {
-    overflow : hidden ;
-    margin : 0px ;
-    padding : 0px ;
-    padding-bottom : 20px ;
-    border : 0px ;
-    background-color : #FFFFFF ;
-    
-}
-
-
-.SectionBodyDivider {
-    overflow : hidden ;
-    background-color : #F0F0F0 ;
-    margin : 0px ;
-    padding : 0px ;
-    border : 0px ;
-    
-}
-
-
-.SectionBodyDivider {
-    overflow : hidden ;
-    margin : 0px ;
-    padding : 10px ;
-    padding-left : 10px ;
-    border : 0px ;
-    font-family : Arial ;
-    font-style: normal ;
-    color : #000000 ;
-    
-    
-}
-
-
-
-.SectionBodyElement {
-    overflow : hidden ;
-    margin : 0px ;
-    padding : 35px ;
-    padding-right : 30px ;
-    border : 0px ;
-    
-}
-
-
-.SectionBodyItem {
-    font-family : Arial ;
-}
-
-
-#Footer {
-    padding : 20px ;
-    margin: 0px;
-    background-color : #000000 ;
-    text-align : center ;
-    color : #FFFFFF ;
-    font-family : monospace ;
+.CenteredBody {
+    justify-content: center;
+    padding-top: 70px;
+    padding-bottom: 70px; 
 }
 
 #SandTLink:link {
@@ -387,16 +297,3 @@ font-size: 20px;
     background-color: transparent;
     text-decoration: none;
 }
-
-hr {
-    border: none;
-    height: 1px;
-    /* Set the hr color */
-    color: #333; /* old IE */
-    background-color: #333; /* Modern Browsers */
-}
-
-hr.divider { 
-    margin: 0em;
-    border-width: 2px;
-  } 
