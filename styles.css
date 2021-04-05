@@ -205,6 +205,13 @@ font-size: 60px;
     background-color: white;
     height: 150px;
     width: 150px;
+    
+    padding-right: 3%;
+    display:block;
+}
+
+.ClubImageHolder {
+    margin-right: 3%;
 }
 
 hr {
@@ -248,7 +255,6 @@ hr {
 }
 
 .ClubText {
-    padding-left: 3%;
 }
 
 .ClubTextBody, .WorkTextBody {
