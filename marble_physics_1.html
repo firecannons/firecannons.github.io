@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<body border="0px">
+<table>
+<tr>
+<td>
+<canvas id="myCanvas" width="200" height="100" style="border:1px solid #d3d3d3;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+
+<script>
+
+
+const BACKGROUND_COLOR = "ffffff";
+const STATIC_COLOR = "808080";
+const BALL_COLOR = "00ff00";
+const BALL_RADIUS = 20;
+const MILLI_PER_SEC = 1000;
+const FRAME_RATE = 60;
+const GRAVITY_PER_SEC = 10;
+const ZERO_INDEX = 0;
+
+var BrowserWindow = window;
+var c = document.getElementById("myCanvas");
+var CanvasHeight = BrowserWindow.innerHeight - 30;
+var CanvasWidth = CanvasHeight;
+c.width = CanvasHeight;
+c.height = CanvasHeight;
+var Canvas = c.getContext("2d");
+
+var CurrentFrame = 0;
+
+var MyWorld;
+
+function World(Balls, InStatics)
+{
+	this.Balls=Balls,
+	this.Statics=InStatics
+};
+
+function Coordinate(X,Y)
+{
+	this.X=X,
+	this.Y=Y
+};
+
+function Polygon(InPoints)
+{
+	this.Points=InPoints
+};
+
+function Ball(Position,InRadius, Movement)
+{
+  this.Position=Position;
+  this.Radius=InRadius;
+  this.Movement = Movement;
+};
+
+function InitPhysics()
+{
+	let Balls = [new Ball(new Coordinate(50,50), BALL_RADIUS, new Coordinate(0,0))];
+	let Statics = [
+		new Polygon([new Coordinate(0,100), new Coordinate(150,200), new Coordinate(50,200)]),
+		new Polygon([new Coordinate(150,400), new Coordinate(550,400), new Coordinate(550,450), new Coordinate(150,450)]),
+		new Polygon([new Coordinate(0,400), new Coordinate(150,600), new Coordinate(50,700)]),
+		new Polygon([new Coordinate(650,100), new Coordinate(700,100), new Coordinate(700,600), new Coordinate(650,600)]),
+		new Polygon([new Coordinate(600,100), new Coordinate(750,200), new Coordinate(250,150)]),
+		new Polygon([new Coordinate(500,400), new Coordinate(250,600), new Coordinate(50,550)]),
+		new Polygon([new Coordinate(400,800), new Coordinate(650,600), new Coordinate(650,700)]),
+		new Polygon([new Coordinate(500,800), new Coordinate(100,800), new Coordinate(50,700)]),
+		new Polygon([new Coordinate(0,200), new Coordinate(10,300), new Coordinate(0,400)])
+	]
+	MyWorld = new World(Balls, Statics);
+}
+
+window.onload = function()
+{
+	InitPhysics();
+	setInterval(GameLoop, MILLI_PER_SEC / FRAME_RATE);
+}
+
+
+function GameLoop()
+{
+	Engine(MyWorld);
+	Draw(MyWorld);
+}
+
+function Engine()
+{
+	ApplyGravity(MyWorld);
+	ApplyMovement(MyWorld);
+	ApplyCollisions(MyWorld);
+}
+
+function calcClosestPtOnSegment(x0,y0,x1,y1,cx,cy){
+
+    // calc delta distance: source point to line start
+    var dx=cx-x0;
+    var dy=cy-y0;
+
+    // calc delta distance: line start to end
+    var dxx=x1-x0;
+    var dyy=y1-y0;
+
+    // Calc position on line normalized between 0.00 & 1.00
+    // == dot product divided by delta line distances squared
+    var t=(dx*dxx+dy*dyy)/(dxx*dxx+dyy*dyy);
+
+    // calc nearest pt on line
+    var x=x0+dxx*t;
+    var y=y0+dyy*t;
+
+    // clamp results to being on the segment
+    if(t<0){x=x0;y=y0;}
+    if(t>1){x=x1;y=y1;}
+
+    return({ x:x, y:y, isOnSegment:(t>=0 && t<=1) });
+}
+
+function GetCoordDistance(DistCoord)
+{
+	let A = DistCoord.X;
+	let B = DistCoord.Y;
+	return Math.sqrt(A * A + B * B);
+}
+
+function PerformCollision(Ball, Point1, Point2, isOnSegment, ClosestPointOnLine)
+{
+	let WallYDelta = Point2.Y - Point1.Y;
+	let WallXDelta = Point2.X - Point1.X;
+	var wallAngle = Math.atan2(WallYDelta, WallXDelta);
+	
+	let incidenceAngle = Math.atan2(-Ball.Movement.Y, -Ball.Movement.X);
+
+	var wallNormalAngle = wallAngle-Math.PI/2;
+	
+	
+	if(isOnSegment == false)
+	{
+		NormalYDelta = Ball.Position.Y - ClosestPointOnLine.Y;
+		NormalXDelta = Ball.Position.X - ClosestPointOnLine.X;
+		wallNormalAngle = Math.atan2(NormalYDelta, NormalXDelta);
+	}
+	
+	var differenceAngle = incidenceAngle - wallNormalAngle;
+	var reflectionAngle = incidenceAngle - 2 * differenceAngle;
+	
+	let BallSpeed = GetCoordDistance(Ball.Movement);
+	
+	Ball.Movement.X = Math.cos(reflectionAngle) * BallSpeed;
+	Ball.Movement.Y = Math.sin(reflectionAngle) * BallSpeed;
+	
+	console.log(wallAngle + " " + Ball.Movement.X + " " + Ball.Movement.Y + " " + wallNormalAngle + " " + WallYDelta + " " + WallXDelta + " " + incidenceAngle + " " + differenceAngle
+		+ " " + reflectionAngle);
+}
+
+function ApplyCollisionWithLine(Ball, Coord1, Coord2)
+{
+	let CollisionInfo = calcClosestPtOnSegment(Coord1.X, Coord1.Y, Coord2.X, Coord2.Y, Ball.Position.X, Ball.Position.Y);
+	let ClosestPointOnLine = new Coordinate(CollisionInfo.x, CollisionInfo.y)
+	let IsColliding = IsBallOverPoint(Ball, ClosestPointOnLine);
+	if ( IsColliding == true )
+	{
+		PerformCollision(Ball, Coord1, Coord2, CollisionInfo.isOnSegment, ClosestPointOnLine);
+		ApplyMovementOnObject(Ball);
+	}
+}
+
+function IsBallOverPoint(Ball, Point)
+{
+	var A=Ball.Position.X-Point.X;
+	var B=Ball.Position.Y-Point.Y;
+	let C=Ball.Radius;
+	var isColliding=(A * A + B * B < C * C);
+	return isColliding;
+}
+
+function ApplyBallAndStaticCollision(Ball, Static)
+{
+	for(var index = 0; index < Static.Points.length - 1; index++)
+	{
+		ApplyCollisionWithLine(Ball, Static.Points[index], Static.Points[index + 1]);
+	}
+	ApplyCollisionWithLine(Ball, Static.Points[Static.Points.length - 1], Static.Points[ZERO_INDEX]);
+}
+
+function ApplyBallAndStaticsCollision(Ball, Statics)
+{
+	for(let Static of MyWorld.Statics)
+	{
+		ApplyBallAndStaticCollision(Ball, Static);
+	}
+}
+
+function ApplyCollisions(MyWorld)
+{
+	for(let Ball of MyWorld.Balls)
+	{
+		ApplyBallAndStaticsCollision(Ball, MyWorld.Statics);
+	}
+}
+
+function ApplyMovement(MyWorld)
+{
+	for(let Ball of MyWorld.Balls)
+	{
+		Ball = ApplyMovementOnObject(Ball);
+	}
+}
+
+function ApplyMovementOnObject(Object)
+{
+	Object.Position.X = Object.Position.X + Object.Movement.X;
+	Object.Position.Y = Object.Position.Y + Object.Movement.Y;
+}
+
+function ApplyGravity(MyWorld)
+{
+	for(let Ball of MyWorld.Balls)
+	{
+		Ball = ApplyGravityOnObject(Ball);
+	}
+}
+
+function ApplyGravityOnObject(Object)
+{
+	Object.Movement.Y = Object.Movement.Y + GRAVITY_PER_SEC / FRAME_RATE;
+	return Object;
+}
+
+function Draw(MyWorld)
+{
+	DrawBackground();
+	DrawBalls(MyWorld);
+	DrawStatics(MyWorld);
+}
+
+function DrawBackground()
+{
+  Canvas.beginPath();
+  Canvas.fillStyle = "#" + BACKGROUND_COLOR;
+  Canvas.rect(0, 0, CanvasWidth, CanvasHeight);
+  Canvas.fill();
+}
+
+
+function DrawBalls(MyWorld)
+{
+  for(let Ball of MyWorld.Balls)
+  {
+    Canvas.beginPath();
+    Canvas.arc(Ball.Position.X, Ball.Position.Y, Ball.Radius, 0, 2*Math.PI);
+    Canvas.fillStyle = "#" + BALL_COLOR;
+    Canvas.fill();
+  }
+}
+
+function DrawStatics(MyWorld)
+{
+  for(let Static of MyWorld.Statics)
+  {
+    Canvas.beginPath();
+	Canvas.moveTo(Static.Points[0].X, Static.Points[0].Y);
+	for(var PointIndex = 1; PointIndex < Static.Points.length; PointIndex++)
+	{
+		Canvas.lineTo(Static.Points[PointIndex].X, Static.Points[PointIndex].Y);
+	}
+	Canvas.closePath();
+	Canvas.stroke();
+  }
+}
+
+</script>
+
+</body>
+</html>

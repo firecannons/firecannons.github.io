@@ -6,7 +6,6 @@
         <meta name="description" content="My Website">
         <meta name="keywords" content="Lucas Winkelman,C++,Python,LibNeuroEvolution">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="styles.css">
         
         <!-- This code is for Google Analytics -->
         <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -18,82 +17,192 @@
 
           gtag('config', 'UA-108059990-1');
         </script>
+   <!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+   
 
-        
+<link rel="stylesheet" href="styles.css">
     </head>
     <body>
         <div id="Wrapper">
             <div id="Banner">
                 <div id="BannerImage">
                 </div>
-                <h1 id="BannerMainText">Lucas Winkelman</h1>
-                <h3 id="BannerSubText">Senior in Computer Science at Missouri S & T</h3>
+                <p id="BannerMainText">Lucas Winkelman</p>
             </div>
             
             <div id="Body">
-                
-                <div class="Section">
-                    <div class="SectionHeader">
-                        <div class="SectionHeaderText">Libraries</div>
-                    </div>
-                    <div class="SectionBody">
-                        <ul class="SectionBodyElement">
-                            <li><a href="https://github.com/firecannons/LibNeuroEvolution" class="SectionBodyItem" >LibNeuroEvolution</a></li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="Section">
-                    <div class="SectionHeader">
-                        <div class="SectionHeaderText">Projects</div>
-                    </div>
-                    <div class="SectionBody">
-                        <ul class="SectionBodyElement">
-                            <li><a href="Simulation9.html" class="SectionBodyItem">Internation Aerial Robotics Competition Mission 7 2D Javascript Simulation</a></li>
-                            <li><a href="https://github.com/firecannons/My_Neat" class="SectionBodyItem">NEAT on Pong</a></li>
-                        </ul>
+                <div class="BioArea">
+                    <p id="BioIntro">Hi, my name is Lucas,</p>
+                    <p id="BioBody">I'm a software developer who graduated with a B.S. degree in Computer Science from <a id="SandTLink" href="https://www.mst.edu/">Missouri University of Science and Technology</a> in 2020.
+                    My experience includes programming work as an intern at the State of Missouri for two summers, as well as back-end development at Shelter Insurance Companies.
+                    I'm always dabbling in a cool project or some interesting area of computing.</p>
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <a href="Assets/Resume.pdf" type="button" class="btn btn-secondary" target="_blank">Resume</a>
+                        <a href="Assets/Resume.docx" type="button" class="btn btn-secondary" target="_blank">.docx Resume</a>
+                        <a href="Assets/Transcript.pdf" type="button" class="btn btn-secondary" target="_blank">Transcript</a>
                     </div>
                 </div>
-                
-                <div class="Section">
-                    <div class="SectionHeader">
-                        <div class="SectionHeaderText">Resume</div>
-                    </div>
-                    <div class="SectionBody">
-                        <ul class="SectionBodyElement">
-                            <li><a href="Assets/Resume.docx" class="SectionBodyItem"  target="_blank">DOCX Resume</a></li>
-                            <li><a href="Assets/Resume.pdf" class="SectionBodyItem"  target="_blank">PDF Resume</a></li>
-                            <li><a href="Assets/Transcript.pdf" class="SectionBodyItem"  target="_blank">PDF Transcript</a></li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="Section">
-                    <div class="SectionHeader">
-                        <div class="SectionHeaderText">Clubs and Activities</div>
-                    </div>
-                    <div class="SectionBody">
-                        <div class="SectionBodyDivider">
-                            <div class="SectionBodyDividerText">Currently</div>
+
+
+
+                <div class="GreenBodyBackground">
+                    <div class="MainBodyArea">
+                        <div class="ProjectArea">
+                            <p id="ProjectAreaText">Cool Projects</p>
                         </div>
-                        <ul class="SectionBodyElement">
-                            <li><a href="https://multirotor.mst.edu/" class="SectionBodyItem">MultiRotor Robot Design Team</a></li>
-                        </ul>
-                        <div class="SectionBodyDivider">
-                            <div class="SectionBodyDividerText">In the Past</div>
+
+		                <div class="Area">
+                            <div>
+                                <img class="AreaImageLeft" src="Assets/EsImage.PNG"></img>
+                            </div>
+                            <div class="AreaTextRight">
+                                <a href="https://github.com/firecannons/Es" class="AreaLink"><p class="AreaTextTitle">Es</p></a>
+                                <p class="AreaTextBody">A programming language that I developed along with its compiler.  Although unfinished, it is unique, inspired by evidence-based language Quorum.</p>
+                            </div>
                         </div>
-                        <ul class="SectionBodyElement">
-                            <li><div class="SectionBodyItem">Intern at State of Missouri, ITSD</div></li>
-                            <li><a href="https://multirotor.mst.edu/" class="SectionBodyItem">MultiRotor Robot Design Team</a></li>
-                            <li><a href="https://mstacm.org/" class="SectionBodyItem">ACM SIG-Web</a></li>
-                            <li><a href="https://comp.mstacm.org/" class="SectionBodyItem">ACM SIG-Competition</a></li>
-                            <li><a href="https://acmsigsec.mst.edu/" class="SectionBodyItem">ACM SIG-Security</a></li>
-                            <li><a href="http://siggame.io/" class="SectionBodyItem">ACM SIG-Game</a></li>
-                            <li><a href="https://www.firstinspires.org/" class="SectionBodyItem">FIRST Robotics</a></li>
-                        </ul>
+
+                        <div class="HRContainer">
+                            <hr/>
+                        </div>
+
+                        <div class="Area">
+                            <div class="AreaTextLeft">
+                                <a href="Simulation9.html" class="AreaLink"><p class="AreaTextTitle">IARC Mission 7 Simulator</p></a>
+                                <p class="AreaTextBody">A two-dimensional simulation of Internation Aerial Robotics Competition's Mission 7.  Click the link to try it out.</p>
+                            </div>
+                            <div>
+                                <img class="AreaImageRight" src="Assets/Simulation.png"></img>
+                            </div>
+                        </div>
+
+                        <div class="HRContainer">
+                            <hr/>
+                        </div>
+
+                        <div class="Area">
+                            <div>
+                                <img class="AreaImageLeft" src="Assets/NEAT_Pong.png"></img>
+                            </div>
+                            <div class="AreaTextRight">
+                                <a href="https://github.com/firecannons/My_Neat" class="AreaLink"><p class="AreaTextTitle">Neuroevolution Pong</p></a>
+                                <p class="AreaTextBody">Created my own version of <a href="https://www.cs.ucf.edu/~kstanley/neat.html">NeuroEvolution of Augmenting Topologies (NEAT)</a> method proposed by Ken Standley et al.,
+                                    and used it to teach a neural network to play pong.</p>
+                            </div>
+                        </div>
+            
+                        <div class="Area CenteredBody">
+                            <p class="BodyText">And much, much more...</p>
+                        </div>
+
+                        <div class="LargeHRContainer">
+                            <hr class="LargeHR" style="height: 2px;"/>
+                        </div>
                     </div>
                 </div>
-                
+
+
+            <div class="YellowBodyBackground">
+                <div class="MainBodyArea">
+                    <div class="WorkTitleArea">
+                        <p id="WorkTitleAreaText">Work Experience</p>
+                    </div>
+                    <div class="WorkArea">
+                        <div class="WorkText">
+                            <p class="WorkTextTitle">Software Developer at Shelter Insurance Companies</p>
+                            <p class="WorkTextBody">Helped design back-end applications to pass data from one place to another.</p>
+                        </div>
+                    </div>
+                    <div class="WorkArea">
+                        <hr/>
+                    </div>
+                    <div class="WorkArea">
+                        <div class="WorkText">
+                            <p class="WorkTextTitle">Intern in Missouri State Government, OA-ITSD</p>
+                            <p class="WorkTextBody">Interned at ITSD-DOLIR for the 2018 and 2019 summers.  Helped with Data Change Requests (DCRs) to fix data, fixed some code bugs, and also
+                                worked to make application deployments faster.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="WorkSpacer"></div>
+                    <div class="LargeHRContainer">
+                        <hr class="LargeHR" style="height: 2px;"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="SilverBodyBackground">
+                <div class="MainBodyArea">
+                    <div class="ProjectArea">
+                        <p id="ProjectAreaText">Clubs and Activities</p>
+                    </div>
+                    <div class="ClubArea">
+                        <div class="ClubImageHolder">
+                            <img class="ClubImage" src="Assets/drone.png"></img>
+                        </div>
+                        <div class="ClubText">
+                            <a href="https://multirotor.mst.edu/"><p class="ClubTextTitle">Missouri S&T Multirotor</p></a>
+                            <p class="ClubTextBody">I was active in the team for most of college, developing a 2-D simulation of Mission 7, a 3-D simulation of it using Gazebo, and a 3-D simulation of Mission 9 with AirSim.</p>
+                        </div>
+                    </div>
+                    <div class="ClubArea">
+                        <hr/>
+                    </div>
+
+                    <div class="ClubArea">
+                        <div class="ClubImageHolder">
+                            <img class="ClubImage" src="Assets/FIRST_Vertical_RGB.png"></img>
+                        </div>
+                        <div class="ClubText">
+                            <a href="https://www.firstinspires.org/"><p class="ClubTextTitle">FIRST Robotics</p></a>
+                            <p class="ClubTextBody">I participated in FIRST robotics throughout much of the primary school years.</p>
+                        </div>
+                    </div>
+                    <div class="ClubArea">
+                        <hr/>
+                    </div>
+
+                    <div class="ClubArea">
+                        <div class="ClubText">
+                            <a href="https://mstacm.org/"><p class="ClubTextTitle">ACM Web</p></a>
+                            <p class="ClubTextBody">For a semester, I worked on upgrading the ACM Website.</p>
+                        </div>
+                    </div>
+                    <div class="ClubArea">
+                        <hr/>
+                    </div>
+
+                    <div class="ClubArea">
+                        <div class="ClubText">
+                            <a href="https://comp.mstacm.org/"><p class="ClubTextTitle">ACM Competition</p></a>
+                            <p class="ClubTextBody">For a semester, I did competitive coding, for example, doing <a href="https://open.kattis.com/universities/mst.edu">Kattis</a> coding problems.</p>
+                        </div>
+                    </div>
+                    <div class="ClubArea">
+                        <hr/>
+                    </div>
+
+                    <div class="ClubArea">
+                        <div class="ClubText">
+                            <a href="https://acmsec.mst.edu/"><p class="ClubTextTitle">ACM Security</p></a>
+                            <p class="ClubTextBody">For a semester, participated in CTFs and learned about cyber-security.</p>
+                        </div>
+                    </div>
+                    <div class="ClubArea">
+                        <hr/>
+                    </div>
+
+                    <div class="ClubArea">
+                        <div class="ClubText">
+                            <a href="http://siggame.io/"><p class="ClubTextTitle">ACM Game</p></a>
+                            <p class="ClubTextBody">Helped design the game for Fall 2016.</p>
+                        </div>
+                    </div>
+            
+                    <div class="Area" style="justify-content: center; padding-top: 70px;">
+                        <a href="marble_physics_1.html" class="btn btn-danger btn-lg">&#128721; Do not click here. &#128721;</a>
+                    </div>
+                </div>
             </div>
             <div id="Footer">Lucas Winkelman | lawf48@mst.edu</div>
         </div>
