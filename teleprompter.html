@@ -1,0 +1,146 @@
+<html>
+<div class='controlPanel'>
+<textarea class='scrollText'></textarea>
+<button class='GoButton'>Go</button>
+<input type='number' placeholder='Lines Per Second' class='LinesPerSecondInput' value='0.9' step='0.05'>
+</div>
+
+<div class='scrollDiv'>
+<h1 class='mainText'>
+</h1>
+</div>
+
+<style>
+
+.mainText
+{
+  font-family: sans-serif;
+  margin-top: 120%;
+  margin-bottom: 120%;
+  /*white-space: pre-wrap;*/
+}
+
+.controlPanel
+{
+  display: flex;
+}
+
+.scrollText
+{
+  resize: both;
+  font-family: sans-serif;
+  width: 500px;
+  height: 80px;
+}
+
+.scrollDiv
+{
+  overflow-y: scroll;
+  height: 90%;
+}
+
+.GoButton
+{
+  margin-left: 15px;
+}
+</style>
+
+<script>
+
+let scrollMode = false
+
+const SLEEP_RESOLUTION_MS = 50
+const SECONDS_TO_MILLI = 1000
+const FONT_SIZE = 100
+/*const TARGET_TEXT = `In 1831, a biologist prepared to set sail on a voyage, one that would ultimately change the course of human history.
+Despite having constant sickness, Charles Darwin spent almost five years sailing around the world on the HMS Beagle, studying the natural world and developing his theories.  After the voyage he played an active role in the scientific community, and, in 1859, published the book he is most well known for, On the Origin of Species.
+Darwin found that species of organisms changed over time, and that those more fit for their environment produced more offspring. This upgraded the species’ ability to live in its environment, and Darwin named this upgrading process natural selection.  He envisioned that over time, natural selection could bring about all the diversity of life that we find today.
+The ideas of On the Origin of Species were rapidly adopted by people in the scientific community. Since the time of Darwin, the theory of evolution has become widely supported by the scientific community.
+Welcome to the first Episode of the Christianity on Fire Origins video series, and I'm Lucas Winkleman. This content from these videos comes from my book Origins book. In it as well as this video series, we’re going to talk about the origins debate, or the creation-evolution debate. We’re going to look at it from a variety of perspectives, and talk about science, whether the Bible agrees with the creation theory more than evolution, and even how the theories are involved with ethics. Before we get started however, we need to ask ourselves an important question. Since science is all about empirical testing, should biblical creation be considered as a possible origins theory since it involves supernatural action.
+`*/
+
+async function resizeTextClass(textClass, size)
+{
+  document.getElementsByClassName(textClass)[0].style.fontSize = size
+}
+
+async function loadTextClassWithText(textClass, text)
+{
+  document.getElementsByClassName(textClass)[0].innerHTML = text
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function slowScrollDownRun()
+{
+  await setTimeout(slowScrollDownRun, SLEEP_RESOLUTION_MS)
+  if(scrollMode == true)
+  {
+    let linesPerSecond = await parseFloat(document.getElementsByClassName('LinesPerSecondInput')[0].value)
+    let pixelsPerFrame = linesPerSecond * FONT_SIZE * (SLEEP_RESOLUTION_MS / SECONDS_TO_MILLI)
+    console.log(pixelsPerFrame)
+    await document.getElementsByClassName('scrollDiv')[0].scrollBy(0, pixelsPerFrame)
+  }
+}
+
+async function startScrollDown()
+{
+  if(scrollMode == false)
+  {
+    scrollMode = true
+  }
+  else
+  {
+    scrollMode = false
+  }
+}
+
+async function fillScrollText()
+{
+  let el = document.getElementsByClassName('scrollText')[0]
+  let text = el.value
+  loadTextClassWithText('mainText', text)
+}
+
+async function moveArrowKey(e)
+{
+  if(e.key == 'ArrowDown')
+  {
+    await document.getElementsByClassName('scrollDiv')[0].scrollBy(0, 20)
+  }
+  else if(e.key == 'ArrowUp')
+  {
+    await document.getElementsByClassName('scrollDiv')[0].scrollBy(0, -20)
+  }
+}
+
+async function setupGoButtonEvents()
+{
+  document.getElementsByClassName('GoButton')[0].addEventListener('click', startScrollDown)
+}
+
+async function setupScrollTextEvents()
+{
+  document.getElementsByClassName('scrollText')[0].addEventListener('input', fillScrollText)
+}
+
+async function setupArrowKeyEvents()
+{
+  document.addEventListener('keydown', moveArrowKey)
+}
+
+async function setupControlPanelEvents()
+{
+  await setupGoButtonEvents()
+  await setupScrollTextEvents()
+  await setupArrowKeyEvents()
+}
+
+setupControlPanelEvents()
+resizeTextClass('mainText', '100px')
+slowScrollDownRun()
+
+</script>
+</html>
