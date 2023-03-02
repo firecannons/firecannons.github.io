@@ -3,6 +3,19 @@
 <textarea class='scrollText'></textarea>
 <button class='GoButton'>Go</button>
 <input type='number' placeholder='Lines Per Second' class='LinesPerSecondInput' value='0.9' step='0.05'>
+
+<div>
+<div>
+<input type="radio" id="listenMoveOff" name="listenMove" value="listenMoveOff" class='listenMoveOff' checked>
+<label for="listenMoveOff">Listen Move Off</label>
+</div>
+
+<div>
+<input type="radio" id="listenMoveOn" name="listenMove" value="listenMoveOn" class='listenMoveOn'>
+<label for="listenMoveOn">Listen Move On</label>
+</div>
+</div>
+
 </div>
 
 <div class='scrollDiv'>
@@ -43,15 +56,60 @@
 {
   margin-left: 15px;
 }
+
+.teleDiv
+{
+  display: inline;
+}
 </style>
 
 <script>
 
-let scrollMode = false
+class PDController
+{
+  constructor(k1, k2)
+  {
+    this.lastPosition = 0
+    this.k1 = k1
+    this.k2 = k2
+  }
 
-const SLEEP_RESOLUTION_MS = 50
+  setConstants(k1, k2)
+  {
+    this.k1 = k1
+    this.k2 = k2
+  }
+
+  run(desired, current)
+  {
+    let a = (desired - current) * this.k1 - (current - this.lastPosition) * this.k2
+    this.lastPosition = current
+    return a
+  }
+}
+
+let scrollMode = false
+let listenMoveEnabled = false
+
+let recognition = null
+
+let flowY = 0
+
+let pdController = new PDController(0.1, 0.5)
+
+let ignoreNextScrollEvent = false
+
+const SLEEP_RESOLUTION_MS = 20
 const SECONDS_TO_MILLI = 1000
 const FONT_SIZE = 100
+
+const RATIO_FROM_BOTTOM = 3 / 4
+
+const SCROLL_MODE = 'auto'
+
+const MAX_LISTEN_SCROLL_JUMP_FORWARD = 500
+const MAX_LISTEN_SCROLL_JUMP_BACKWARD = -300
+
 /*const TARGET_TEXT = `In 1831, a biologist prepared to set sail on a voyage, one that would ultimately change the course of human history.
 Despite having constant sickness, Charles Darwin spent almost five years sailing around the world on the HMS Beagle, studying the natural world and developing his theories.  After the voyage he played an active role in the scientific community, and, in 1859, published the book he is most well known for, On the Origin of Species.
 Darwin found that species of organisms changed over time, and that those more fit for their environment produced more offspring. This upgraded the species’ ability to live in its environment, and Darwin named this upgrading process natural selection.  He envisioned that over time, natural selection could bring about all the diversity of life that we find today.
@@ -66,11 +124,32 @@ async function resizeTextClass(textClass, size)
 
 async function loadTextClassWithText(textClass, text)
 {
-  document.getElementsByClassName(textClass)[0].innerHTML = text
+  let wordArray = text.split(' ')
+  let html = ''
+  let index = 0
+  while(index < wordArray.length)
+  {
+    let word = wordArray[index]
+    html = html + '<div class="teleDiv">' + word + ' </div>'
+    index = index + 1
+  }
+  document.getElementsByClassName(textClass)[0].innerHTML = html
 }
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function getTeleDiv()
+{
+  let teleDiv = await document.getElementsByClassName('scrollDiv')[0]
+  return teleDiv
+}
+
+async function amountTeleScrolledFromTop()
+{
+  let cDiv = await getTeleDiv()
+  return cDiv.scrollTop
 }
 
 async function slowScrollDownRun()
@@ -79,10 +158,13 @@ async function slowScrollDownRun()
   if(scrollMode == true)
   {
     let linesPerSecond = await parseFloat(document.getElementsByClassName('LinesPerSecondInput')[0].value)
-    let pixelsPerFrame = linesPerSecond * FONT_SIZE * (SLEEP_RESOLUTION_MS / SECONDS_TO_MILLI)
-    console.log(pixelsPerFrame)
-    await document.getElementsByClassName('scrollDiv')[0].scrollBy(0, pixelsPerFrame)
+    let amountMovedDown = linesPerSecond * FONT_SIZE * (SLEEP_RESOLUTION_MS / SECONDS_TO_MILLI)
+    flowY = flowY + amountMovedDown
   }
+  let pixelsPerFrame = await pdController.run(flowY, await amountTeleScrolledFromTop())
+  let cDiv = await getTeleDiv()
+  ignoreNextScrollEvent = true
+  cDiv.scrollTop = cDiv.scrollTop + pixelsPerFrame
 }
 
 async function startScrollDown()
@@ -108,12 +190,158 @@ async function moveArrowKey(e)
 {
   if(e.key == 'ArrowDown')
   {
-    await document.getElementsByClassName('scrollDiv')[0].scrollBy(0, 20)
+    e.preventDefault()
+    flowY = flowY + 100
   }
   else if(e.key == 'ArrowUp')
   {
-    await document.getElementsByClassName('scrollDiv')[0].scrollBy(0, -20)
+    e.preventDefault()
+    flowY = flowY - 100
   }
+}
+
+async function trimOfAllProblemCharacters(text)
+{
+  text = await text.trim()
+  text = await text.replaceAll(',', '')
+  text = await text.replaceAll('.', '')
+  text = await text.replaceAll(':', '')
+  text = await text.replaceAll(';', '')
+  text = await text.replaceAll('[', '')
+  text = await text.replaceAll(']', '')
+  text = await text.replaceAll('-', '')
+  text = await text.replaceAll('\"', '')
+  text = await text.replaceAll('\'', '')
+  return text
+}
+
+async function getTeleDivsWithText(word)
+{
+  let foundArray = []
+  let teleDivs = await document.getElementsByClassName('teleDiv')
+  let index = 0
+  while(index < teleDivs.length)
+  {
+    let teleDiv = teleDivs[index]
+    if(await trimOfAllProblemCharacters(teleDiv.textContent) == await trimOfAllProblemCharacters(word))
+    {
+      foundArray.push(teleDiv)
+    }
+    index = index + 1
+  }
+  return foundArray
+}
+
+async function findClosestDiv(y, divArray)
+{
+  let closestDiv = null
+  let minDif = 99999
+  let index = 0
+  while(index < divArray.length)
+  {
+    let cDiv = divArray[index]
+    let box = await cDiv.getBoundingClientRect()
+    let yDif = Math.abs(y - box.top)
+    if(yDif < minDif)
+    {
+      minDif = yDif
+      closestDiv = cDiv
+    }
+    index = index + 1
+  }
+  return closestDiv
+}
+
+async function getDesiredYOfTele()
+{
+  let windowHeight = window.innerHeight
+  let y = windowHeight - windowHeight * RATIO_FROM_BOTTOM
+  return y
+}
+
+async function doGoToNearestOccurence(word)
+{
+  let foundArray = await getTeleDivsWithText(word)
+  let closestDiv = await findClosestDiv(await getDesiredYOfTele(), foundArray)
+  if(closestDiv != null)
+  {
+    let diffY = closestDiv.offsetTop - await getDesiredYOfTele()
+    let amountOff = Math.abs(diffY - await amountTeleScrolledFromTop())
+    if(amountOff < MAX_LISTEN_SCROLL_JUMP_FORWARD && amountOff > MAX_LISTEN_SCROLL_JUMP_BACKWARD)
+    {
+      flowY = diffY
+    }
+  }
+}
+
+async function possiblyGoToNearestOccurence(word)
+{
+  if(listenMoveEnabled == true)
+  {
+    await doGoToNearestOccurence(word)
+  }
+}
+
+async function onSpeechResult(event)
+{
+  let resultArray = event.results
+  let suggestionArray = resultArray[resultArray.length - 1]
+  let suggestion = suggestionArray[suggestionArray.length - 1]
+  let wordString = suggestion.transcript
+  let wordArray = wordString.split(' ');
+  let word = wordArray[wordArray.length - 1]
+  await possiblyGoToNearestOccurence(word)
+}
+
+async function onSpeechStop(event)
+{
+  if(listenMoveEnabled == true)
+  {
+    await recognition.stop()
+    await startRecognition()
+  }
+}
+
+async function startRecognition()
+{
+  const SpeechRecognition = window.SpeechRecognition || webkitSpeechRecognition;
+  const SpeechGrammarList = window.SpeechGrammarList || webkitSpeechGrammarList;
+  const SpeechRecognitionEvent = window.SpeechRecognitionEvent || webkitSpeechRecognitionEvent;
+
+  recognition = new SpeechRecognition();
+  const speechRecognitionList = new SpeechGrammarList();
+  recognition.grammars = speechRecognitionList;
+  recognition.continuous = true;
+  recognition.lang = 'en-US';
+  recognition.interimResults = true;
+  recognition.addEventListener('result', onSpeechResult)
+  recognition.addEventListener('speechend', onSpeechStop)
+  await recognition.start()
+}
+
+async function onTeleManualScroll()
+{
+  if(ignoreNextScrollEvent == false)
+  {
+    let amount = await amountTeleScrolledFromTop()
+    flowY = amount
+  }
+  ignoreNextScrollEvent = false
+}
+
+async function onListenMoveRadioChanged()
+{
+  listenMoveEnabled = await document.getElementsByClassName('listenMoveOn')[0].checked
+  if(listenMoveEnabled == true)
+  {
+    await startRecognition()
+  }
+}
+
+async function setupListenMoveRadioEvents()
+{
+  document.getElementsByClassName('listenMoveOff')[0].addEventListener('change', onListenMoveRadioChanged)
+  document.getElementsByClassName('listenMoveOn')[0].addEventListener('change', onListenMoveRadioChanged)
 }
 
 async function setupGoButtonEvents()
@@ -131,14 +359,26 @@ async function setupArrowKeyEvents()
   document.addEventListener('keydown', moveArrowKey)
 }
 
+async function setupOnScrollEvents()
+{
+  document.getElementsByClassName('scrollDiv')[0].addEventListener('scroll', onTeleManualScroll)
+}
+
 async function setupControlPanelEvents()
 {
   await setupGoButtonEvents()
+  await setupListenMoveRadioEvents()
   await setupScrollTextEvents()
   await setupArrowKeyEvents()
 }
 
+async function setupTeleDivEvents()
+{
+  await setupOnScrollEvents()
+}
+
 setupControlPanelEvents()
+setupTeleDivEvents()
 resizeTextClass('mainText', '100px')
 slowScrollDownRun()
 
