@@ -1,0 +1,263 @@
+<html>
+<div>
+</div>
+<div class='corpusExplore'>
+<div class='corpusSearch'>
+<div class='searchControls'>
+
+<div class='doubleCorpus'>
+<div class='formInput'>
+Haystack Text:
+<textarea class='haystackText targetText corpusHolder' rows='8'>
+</textarea>
+<div class='formButton fileUpload'>
+  Upload File
+</div>
+<input type="file" class='fileInput'>
+</div>
+
+<div class='formInput'>
+Sidealong Corpus:
+<textarea class='sidealongText targetText corpusHolder' rows='8'>
+</textarea>
+<div class='formButton fileUpload'>
+  Upload File
+</div>
+<input type="file" class='fileInput'>
+</div>
+</div>
+
+<div class='formInput'>
+Needle:
+<textarea class='needleText targetText corpusHolder' rows='8'>
+</textarea>
+<div class='formButton fileUpload'>
+  Upload File
+</div>
+<input type="file" class='fileInput'>
+</div>
+<div class='formButton goButton'>
+  <div>
+  Go
+  </div>
+</div>
+</div>
+<div class='results'>
+  <div class='resultsCount'>
+  </div>
+  <div class='resultsRows'>
+  </div>
+</div>
+</div>
+<div>
+</div class='Segmenter'>
+<h1>File Segmenter</h1>
+<div class='formInput'>
+<input type="file" class='originalFile'>
+<div class='formButton segmentButton'>
+  Segment
+</div>
+</div>
+<div class='formInput'>
+  <div>Number of Characters</div>
+  <input type='number' class='maxLength' value='100'>
+</div>
+</div>
+<style>
+
+.doubleCorpus
+{
+  display: flex;
+}
+
+.corpusHolder
+{
+  min-width: 50vh;
+}
+
+.formInput
+{
+  display: flex;
+}
+
+.resultsRows
+{
+  min-height: 10vh;
+  max-height: 90vh;
+  overflow: scroll;
+}
+
+.formButton
+{
+  background-color: #2222bb;
+  color: white;
+  max-width: 100px;
+  border-radius: 3px;
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.searchResult
+{
+  background-color: #dddddd;
+  border: 1px solid #999999;
+  padding: 20px;
+}
+
+.resultSide
+{
+  padding: 10px;
+}
+</style>
+<script>
+setUpGoButtons()
+setupUploadButtons()
+setupSegmentButtons()
+
+function setUpGoButtons()
+{
+  let goButtons = document.getElementsByClassName('goButton')
+  let index = 0
+  while(index < goButtons.length)
+  {
+    let currentGoButton = goButtons[index]
+    currentGoButton.addEventListener('click', doSearch)
+    index = index + 1
+  }
+}
+
+function doSearch(e)
+{
+  let button = e.target
+  let corpusSearchDiv = button.closest('.corpusSearch')
+  let haystackTextElement = corpusSearchDiv.getElementsByClassName('haystackText')[0]
+  let needleTextElement = corpusSearchDiv.getElementsByClassName('needleText')[0]
+  let sidealongElement = corpusSearchDiv.getElementsByClassName('sidealongText')[0]
+  let resultsRows = corpusSearchDiv.getElementsByClassName('resultsRows')[0]
+  let resultsCount = corpusSearchDiv.getElementsByClassName('resultsCount')[0]
+  resultsRows.innerHTML = ``
+  let haystackText = haystackTextElement.value
+  let needleText = needleTextElement.value
+  let sidealongText = sidealongElement.value
+  searchForText(haystackText, needleText, sidealongText, resultsRows, resultsCount)
+}
+
+function searchForText(haystackText, needleText, sidealongText, resultsRows, resultsCount)
+{
+  let haystackLineArray = haystackText.split('\n')
+  let sidalongLineArray = sidealongText.split('\n')
+  let finds = []
+  countOccurences = 0
+  let lineIndex = 0
+  while(lineIndex < haystackLineArray.length)
+  {
+    let lineText = haystackLineArray[lineIndex]
+    if(lineText.includes(needleText) == true)
+    {
+      let sidealongText = sidalongLineArray[lineIndex]
+      finds.push({'text': lineText, 'sidealong': sidealongText})
+      countOccurences = countOccurences + 1
+    }
+    lineIndex = lineIndex + 1
+  }
+  showResultsCount(resultsCount, countOccurences)
+  let findsSorted = finds.sort((a, b) => a.text.length - b.text.length);
+  let output = ''
+  for(let line of findsSorted)
+  {
+    output = output + addDisplayRow(line, resultsRows)
+  }
+  resultsRows.innerHTML = output
+}
+
+function showResultsCount(resultsCount, countOccurences)
+{
+  resultsCount.innerHTML = countOccurences + ` results`
+}
+
+function addDisplayRow(line, resultsElement)
+{
+  let output = `<div class='searchResult'><div class='resultSide'>` + line.text + `</div><div class='resultSide'>` + line.sidealong + `</div></div>`
+  return output
+}
+
+function setupUploadButtons()
+{
+  let fileUploads = document.getElementsByClassName('fileUpload')
+  for(let button of fileUploads)
+  {
+    button.addEventListener('click', uploadFile )
+  }
+}
+
+function uploadFile(e, inputClass, textAreaClass)
+{
+  let uploadButton = e.target
+  let formInput = uploadButton.closest('.formInput')
+  let fileInput = formInput.getElementsByClassName('fileInput')[0]
+  var fileToLoad = fileInput.files[0]
+
+  var fileReader = new FileReader();
+  fileReader.onload = function(fileLoadedEvent){
+      var fileText = fileLoadedEvent.target.result;
+      let textArea = formInput.getElementsByClassName('targetText')[0]
+      textArea.value = fileText
+  };
+
+  fileReader.readAsText(fileToLoad, "UTF-8");
+}
+
+function setupSegmentButtons()
+{
+  let segmentButtons = document.getElementsByClassName('segmentButton')
+  for(let button of segmentButtons)
+  {
+    button.addEventListener('click', function(e) { segmentFile(e)} )
+  }
+}
+
+function segmentFile(e)
+{
+  let button = e.target
+  let overAllDiv = button.closest('.corpusExplore')
+  let fileInput = overAllDiv.getElementsByClassName('originalFile')[0]
+  let maxCharacterInput = overAllDiv.getElementsByClassName('maxLength')[0]
+  let maxCharacters = maxCharacterInput.value
+  var fileToLoad = fileInput.files[0]
+
+  var fileReader = new FileReader();
+  fileReader.onload = function(fileLoadedEvent){
+      var fileText = fileLoadedEvent.target.result;
+      let limitedText = segmentText(fileText, maxCharacters)
+      downloadText(limitedText)
+  };
+
+  fileReader.readAsText(fileToLoad, "UTF-8");
+}
+
+function segmentText(text, limitNumber)
+{
+  let outputText = text.substring(0, limitNumber)
+  return outputText
+}
+
+function downloadText(text)
+{
+  let filename = 'limited.txt'
+  var element = document.createElement('a');
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  element.setAttribute('download', filename);
+
+  element.style.display = 'none';
+  document.body.appendChild(element);
+
+  element.click();
+
+  document.body.removeChild(element);
+}
+
+
+</script>
+</html>
