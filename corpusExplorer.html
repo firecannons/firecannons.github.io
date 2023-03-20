@@ -3,7 +3,7 @@
 </div>
 <div class='corpusExplore'>
 <div class='corpusSearch'>
-<div class='searchControls'>
+<div class='corpuses'>
 
 <div class='doubleCorpus'>
 <div class='formInput'>
@@ -26,31 +26,15 @@ Sidealong Corpus:
 <input type="file" class='fileInput'>
 </div>
 </div>
-
-<div class='formInput'>
-Needle:
-<textarea class='needleText targetText corpusHolder' rows='8'>
-</textarea>
-<div class='formButton fileUpload'>
-  Upload File
-</div>
-<input type="file" class='fileInput'>
-</div>
 <div class='formButton goButton'>
   <div>
   Go
   </div>
 </div>
 </div>
-<div class='results'>
-  <div class='resultsCount'>
-  </div>
-  <div class='resultsRows'>
-  </div>
 </div>
-</div>
-<div>
-</div class='Segmenter'>
+
+<div class='Segmenter'>
 <h1>File Segmenter</h1>
 <div class='formInput'>
 <input type="file" class='originalFile'>
@@ -63,11 +47,11 @@ Needle:
   <input type='number' class='maxLength' value='100'>
 </div>
 </div>
+</div>
 <style>
 
 .doubleCorpus
 {
-  display: flex;
 }
 
 .corpusHolder
@@ -110,11 +94,143 @@ Needle:
 {
   padding: 10px;
 }
+
+.specificSearch
+{
+  resize: vertical;
+  overflow: scroll;
+  border: 1px solid #888888;
+  margin: 5px;
+  height: 200px;
+}
 </style>
 <script>
+
+const COUNT_SPECIFIC_SEARCH = 100
+const MAX_NUMBER_OF_RESULTS_DEFAULT = 100
+
+setupSpecificSearches(COUNT_SPECIFIC_SEARCH)
 setUpGoButtons()
 setupUploadButtons()
 setupSegmentButtons()
+
+class find
+{
+  constructor(corpus1Sentence, corpus2Sentence)
+  {
+    this.corpus1Sentence = corpus1Sentence
+    this.corpus2Sentence = corpus2Sentence
+  }
+}
+
+class specificSearch
+{
+  constructor(overDiv)
+  {
+    this.overDiv = overDiv
+    this.finds = []
+    this.countOccurences = 0
+  }
+
+  readInNeedleAndLimit()
+  {
+    this.needle = this.getNeedle()
+    this.limit = this.getLimit()
+  }
+
+  getNeedle()
+  {
+    let needleTextElement = this.overDiv.getElementsByClassName('needleText')[0]
+    let needle = needleTextElement.value
+    return needle
+  }
+
+  getLimit()
+  {
+    let maxNumberResultsElement = this.overDiv.getElementsByClassName('maxNumberResults')[0]
+    let maxNumberResults = parseInt(maxNumberResultsElement.value)
+    return maxNumberResults
+  }
+
+  addFindFromSentences(sentence1, sentence2)
+  {
+    let newFind = new find(sentence1, sentence2)
+    this.finds.push(newFind)
+    this.countOccurences = this.countOccurences + 1
+  }
+
+  outputResults()
+  {
+    this.outputResultsCount()
+    this.outputResultsRows()
+  }
+
+  outputResultsCount()
+  {
+    let resultsCountDiv = this.overDiv.getElementsByClassName('resultsCount')[0]
+    specificSearch.outputResultsCountToDiv(resultsCountDiv, this.countOccurences, this.limit)
+  }
+
+  static outputResultsCountToDiv(resultsCountDiv, countOccurences, limitShown)
+  {
+    let html = countOccurences + ` finds`
+    if(countOccurences > limitShown)
+    {
+      html = html + `, ` + limitShown + ` shown`
+    }
+    resultsCountDiv.innerHTML = html
+  }
+
+  outputResultsRows()
+  {
+    this.sortFinds()
+    this.finds = this.finds.slice(0, this.limit)
+    let resultsRowsDiv = this.overDiv.getElementsByClassName('resultsRows')[0]
+    let resultsRowsHtml = ''
+    let resultsIndex = 0
+    while(resultsIndex < this.finds.length)
+    {
+      resultsRowsHtml = resultsRowsHtml + specificSearch.getOutputForFind(this.finds[resultsIndex])
+      resultsIndex = resultsIndex + 1
+    }
+    resultsRowsDiv.innerHTML = ``
+    resultsRowsDiv.innerHTML = resultsRowsDiv.innerHTML + resultsRowsHtml
+  }
+
+  sortFinds()
+  {
+    this.finds = specificSearch.sortFinds(this.finds)
+  }
+
+  static sortFinds(finds)
+  {
+    let sortedFinds = finds.sort((a, b) => a.corpus1Sentence.length - b.corpus1Sentence.length)
+    return finds
+  }
+
+  static getOutputForFind(inFind)
+  {
+    let output = `<div class='searchResult'><div class='resultSide'>` + inFind.corpus1Sentence + `</div><div class='resultSide'>` + inFind.corpus2Sentence + `</div></div>`
+    return output
+  }
+
+  doPossibleSearchAction(lineText, sidealongText)
+  {
+    if(this.needle.length > 0)
+    {
+      this.doSearchAction(lineText, sidealongText)
+    }
+  }
+
+  doSearchAction(lineText, sidealongText)
+  {
+    if(lineText.includes(this.needle) == true)
+    {
+      this.addFindFromSentences(lineText, sidealongText)
+    }
+  }
+
+}
 
 function setUpGoButtons()
 {
@@ -128,23 +244,34 @@ function setUpGoButtons()
   }
 }
 
+function getSpecificSearches()
+{
+  let specificSearches = []
+  let specificSearchDivs = document.getElementsByClassName('specificSearch')
+  let index = 0
+  while(index < specificSearchDivs.length)
+  {
+    let temp = new specificSearch(specificSearchDivs[index])
+    temp.readInNeedleAndLimit()
+    specificSearches.push(temp)
+    index = index + 1
+  }
+  return specificSearches
+}
+
 function doSearch(e)
 {
   let button = e.target
   let corpusSearchDiv = button.closest('.corpusSearch')
   let haystackTextElement = corpusSearchDiv.getElementsByClassName('haystackText')[0]
-  let needleTextElement = corpusSearchDiv.getElementsByClassName('needleText')[0]
   let sidealongElement = corpusSearchDiv.getElementsByClassName('sidealongText')[0]
-  let resultsRows = corpusSearchDiv.getElementsByClassName('resultsRows')[0]
-  let resultsCount = corpusSearchDiv.getElementsByClassName('resultsCount')[0]
-  resultsRows.innerHTML = ``
   let haystackText = haystackTextElement.value
-  let needleText = needleTextElement.value
   let sidealongText = sidealongElement.value
-  searchForText(haystackText, needleText, sidealongText, resultsRows, resultsCount)
+  let specificSearches = getSpecificSearches()
+  searchForText(haystackText, sidealongText, specificSearches)
 }
 
-function searchForText(haystackText, needleText, sidealongText, resultsRows, resultsCount)
+function searchForText(haystackText, sidealongText, specificSearches)
 {
   let haystackLineArray = haystackText.split('\n')
   let sidalongLineArray = sidealongText.split('\n')
@@ -154,33 +281,20 @@ function searchForText(haystackText, needleText, sidealongText, resultsRows, res
   while(lineIndex < haystackLineArray.length)
   {
     let lineText = haystackLineArray[lineIndex]
-    if(lineText.includes(needleText) == true)
+    let specificSearchIndex = 0
+    while(specificSearchIndex < specificSearches.length)
     {
-      let sidealongText = sidalongLineArray[lineIndex]
-      finds.push({'text': lineText, 'sidealong': sidealongText})
-      countOccurences = countOccurences + 1
+      specificSearches[specificSearchIndex].doPossibleSearchAction(lineText, sidalongLineArray[lineIndex])
+      specificSearchIndex = specificSearchIndex + 1
     }
     lineIndex = lineIndex + 1
   }
-  showResultsCount(resultsCount, countOccurences)
-  let findsSorted = finds.sort((a, b) => a.text.length - b.text.length);
-  let output = ''
-  for(let line of findsSorted)
+  let specificSearchIndex = 0
+  while(specificSearchIndex < specificSearches.length)
   {
-    output = output + addDisplayRow(line, resultsRows)
+    specificSearches[specificSearchIndex].outputResults()
+    specificSearchIndex = specificSearchIndex + 1
   }
-  resultsRows.innerHTML = output
-}
-
-function showResultsCount(resultsCount, countOccurences)
-{
-  resultsCount.innerHTML = countOccurences + ` results`
-}
-
-function addDisplayRow(line, resultsElement)
-{
-  let output = `<div class='searchResult'><div class='resultSide'>` + line.text + `</div><div class='resultSide'>` + line.sidealong + `</div></div>`
-  return output
 }
 
 function setupUploadButtons()
@@ -256,6 +370,41 @@ function downloadText(text)
   element.click();
 
   document.body.removeChild(element);
+}
+
+function setupSpecificSearches(count)
+{
+  let toBeAddedHtml= ``
+  let index = 0
+  while(index < count)
+  {
+    toBeAddedHtml = toBeAddedHtml + `
+    <div class='specificSearch'>
+      <div class='formInput'>
+        Needle:
+        <textarea class='needleText targetText corpusHolder' rows='3'></textarea>
+        <div class='formButton fileUpload'>
+          Upload File
+        </div>
+        <input type="file" class='fileInput'>
+      </div>
+      <div class='formInput'>
+        <div>Max number of Results</div>
+        <input type='number' class='maxNumberResults' value='` + MAX_NUMBER_OF_RESULTS_DEFAULT + `'>
+      </div>
+      <div class='results'>
+        <div class='resultsCount'>
+        </div>
+        <div class='resultsRows'>
+        </div>
+      </div>
+    </div>`
+
+    index = index + 1
+  }
+  let corpusSearchDiv = document.getElementsByClassName('corpusSearch')[0]
+  let oldHtml = corpusSearchDiv.innerHTML
+  corpusSearchDiv.innerHTML = oldHtml + toBeAddedHtml
 }
 
 
